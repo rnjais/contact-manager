@@ -2,24 +2,21 @@ package com.contact_manager.entity;
 
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "contacts")
+@Entity // Marks this class as a database entity
+@Table(name = "contacts") // Maps this class to the contacts table
 public class Contact {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generates ID
     private Long id;
 
     private String firstName;
-
     private String lastName;
-
     private String phoneNumber;
-
     private String email;
-
     private String address;
 
+    // Required by JPA
     public Contact() {
     }
 
