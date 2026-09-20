@@ -16,6 +16,17 @@ public class Contact {
     private String email;
     private String address;
 
+    public Contact(Long id, String firstName, String lastName, String phoneNumber, String email, String address) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.address = address;
+    }
+
+
+
     // Required by JPA
     public Contact() {
     }
