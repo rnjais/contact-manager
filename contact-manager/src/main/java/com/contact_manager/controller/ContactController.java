@@ -19,18 +19,6 @@ public class ContactController {
         this.contactService = contactService;
     }
 
-    //Retrieve All Contacts
-    @GetMapping
-    public ResponseEntity<ApiResponse> getAllContacts(){
-        List<Contact> contacts =  contactService.getAllContacts();
-        ApiResponse response = new ApiResponse(
-                true,
-                "Contact retrieved successfully",
-                   contacts
-                );
-        return ResponseEntity.ok().body(response);
-    }
-
     //add contact
     @PostMapping
     public ResponseEntity<ApiResponse> addContact(@Valid @RequestBody  Contact contact){
@@ -39,9 +27,22 @@ public class ContactController {
                 true,
                 "Contact created successfully",
                 savedContact
-                );
+        );
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    //Retrieve All Contacts
+    @GetMapping
+    public ResponseEntity<ApiResponse> getAllContacts(){
+        List<Contact> contacts =  contactService.getAllContacts();
+        ApiResponse response = new ApiResponse(
+                true,
+                "Contacts retrieved successfully",
+                   contacts
+                );
+        return ResponseEntity.ok().body(response);
+    }
+
 
     //get contact by id
     @GetMapping("/{id}")
@@ -61,7 +62,7 @@ public class ContactController {
        Contact updatedcontact = contactService.updateContactById(id,contact);
         ApiResponse response = new ApiResponse(
                 true,
-                "Contact Updated successfully",
+                "Contact updated successfully",
                 updatedcontact
         );
         return ResponseEntity.ok().body(response);
