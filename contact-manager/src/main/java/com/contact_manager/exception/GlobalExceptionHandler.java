@@ -1,5 +1,6 @@
 package com.contact_manager.exception;
 
+import com.contact_manager.response.ApiResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.http.HttpStatus;
@@ -13,20 +14,30 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     //Handle Contact not found
     @ExceptionHandler(ContactNotFoundException.class)
-    public ResponseEntity<String> handleContactNotFound(ContactNotFoundException ex){
+    public ResponseEntity<ApiResponse> handleContactNotFound(ContactNotFoundException ex){
+        ApiResponse response = new ApiResponse(
+                false,
+                ex.getMessage(),
+                null
+        );
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(ex.getMessage());
+                .body(response);
     }
     // handle validation errors
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationError(MethodArgumentNotValidException ex){
+    public ResponseEntity<ApiResponse> handleValidationError(MethodArgumentNotValidException ex){
         Map<String, String> errors = new HashMap<>();
 
               ex.getBindingResult()
                 .getFieldErrors()
                 .forEach(error -> errors.put(error.getField() ,error.getDefaultMessage())
                 );
-              return ResponseEntity.badRequest().body(errors);
+        ApiResponse response = new ApiResponse(
+                false,
+                "Validation failed",
+                 errors
+        );
+              return ResponseEntity.badRequest().body(response);
     }
 }

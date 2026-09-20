@@ -1,6 +1,7 @@
 package com.contact_manager.controller;
 
 import com.contact_manager.entity.Contact;
+import com.contact_manager.response.ApiResponse;
 import com.contact_manager.service.ContactService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,37 +19,62 @@ public class ContactController {
         this.contactService = contactService;
     }
 
-    //Retrive All Contacts
+    //Retrieve All Contacts
     @GetMapping
-    public ResponseEntity<List<Contact>> getAllContacts(){
+    public ResponseEntity<ApiResponse> getAllContacts(){
         List<Contact> contacts =  contactService.getAllContacts();
-        return ResponseEntity.ok().body(contacts);
+        ApiResponse response = new ApiResponse(
+                true,
+                "Contact retrieved successfully",
+                   contacts
+                );
+        return ResponseEntity.ok().body(response);
     }
 
-    //create contact
+    //add contact
     @PostMapping
-    public ResponseEntity<Contact> addContact(@Valid @RequestBody  Contact contact){
+    public ResponseEntity<ApiResponse> addContact(@Valid @RequestBody  Contact contact){
         Contact savedContact = contactService.addContact(contact);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedContact);
+        ApiResponse response = new ApiResponse(
+                true,
+                "Contact created successfully",
+                savedContact
+                );
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     //get contact by id
     @GetMapping("/{id}")
-    public ResponseEntity<Contact> getContactById(@PathVariable Long id){
+    public ResponseEntity<ApiResponse> getContactById(@PathVariable Long id){
         Contact contact = contactService.getContactById(id);
-        return ResponseEntity.ok().body(contact);
+        ApiResponse response = new ApiResponse(
+                true,
+                "Contact retrieved successfully",
+                contact
+        );
+        return ResponseEntity.ok().body(response);
     }
 
     //update contact by id
     @PutMapping("/{id}")
-    public ResponseEntity<Contact> updateContactById(@PathVariable Long id, @Valid @RequestBody Contact contact){
+    public ResponseEntity<ApiResponse> updateContactById(@PathVariable Long id, @Valid @RequestBody Contact contact){
        Contact updatedcontact = contactService.updateContactById(id,contact);
-        return ResponseEntity.ok().body(updatedcontact);
+        ApiResponse response = new ApiResponse(
+                true,
+                "Contact Updated successfully",
+                updatedcontact
+        );
+        return ResponseEntity.ok().body(response);
     }
     //delete contact by id
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteContactById(@PathVariable  Long id){
+    public ResponseEntity<ApiResponse> deleteContactById(@PathVariable  Long id){
         contactService.deleteContactById(id);
-        return ResponseEntity.ok().body("Contact Deleted Successfully");
+        ApiResponse response = new ApiResponse(
+                true,
+                "Contact deleted successfully",
+                null
+        );
+        return ResponseEntity.ok().body(response);
     }
 }
