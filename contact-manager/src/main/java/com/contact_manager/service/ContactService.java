@@ -1,6 +1,7 @@
 package com.contact_manager.service;
 
 import com.contact_manager.entity.Contact;
+import com.contact_manager.exception.ContactNotFoundException;
 import com.contact_manager.repository.ContactRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +27,13 @@ public class ContactService {
 
     //get contact by id
     public Contact getContactById(Long id) {
-        return contactRepository.findById(id).orElseThrow(() -> new RuntimeException("Contact not found with id "+id));
+        return contactRepository.findById(id).orElseThrow(() -> new ContactNotFoundException("Contact not found with id "+id));
 
     }
 
 //    update contact by id
     public Contact updateContactById(Long id, Contact contact) {
-        Contact existingContact = contactRepository.findById(id).orElseThrow(() -> new RuntimeException("Contact not found with id " +id));
+        Contact existingContact = contactRepository.findById(id).orElseThrow(() -> new ContactNotFoundException("Contact not found with id " +id));
 
         existingContact.setFirstName(contact.getFirstName());
         existingContact.setLastName(contact.getLastName());
@@ -44,7 +45,7 @@ public class ContactService {
     }
 //    delete contact by id
     public void deleteContactById(Long id) {
-        Contact contact = contactRepository.findById(id).orElseThrow(() -> new RuntimeException("Contact not found with id " + id));
+        Contact contact = contactRepository.findById(id).orElseThrow(() -> new ContactNotFoundException("Contact not found with id " + id));
         contactRepository.delete(contact);
     }
 }

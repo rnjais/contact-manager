@@ -5,10 +5,8 @@ import com.contact_manager.service.ContactService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/contact")
@@ -29,7 +27,7 @@ public class ContactController {
 
     //create contact
     @PostMapping
-    public ResponseEntity<Contact> addContact(@RequestBody Contact contact){
+    public ResponseEntity<Contact> addContact(@Valid @RequestBody  Contact contact){
         Contact savedContact = contactService.addContact(contact);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedContact);
     }
@@ -43,7 +41,7 @@ public class ContactController {
 
     //update contact by id
     @PutMapping("/{id}")
-    public ResponseEntity<Contact> updateContactById(@PathVariable Long id,@RequestBody Contact contact){
+    public ResponseEntity<Contact> updateContactById(@PathVariable Long id, @Valid @RequestBody Contact contact){
        Contact updatedcontact = contactService.updateContactById(id,contact);
         return ResponseEntity.ok().body(updatedcontact);
     }
