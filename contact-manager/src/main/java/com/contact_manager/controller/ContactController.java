@@ -1,5 +1,6 @@
 package com.contact_manager.controller;
 
+import com.contact_manager.dto.ContactDTO;
 import com.contact_manager.entity.Contact;
 import com.contact_manager.response.ApiResponse;
 import com.contact_manager.service.ContactService;
@@ -21,8 +22,8 @@ public class ContactController {
 
     //add contact
     @PostMapping
-    public ResponseEntity<ApiResponse> addContact(@Valid @RequestBody  Contact contact){
-        Contact savedContact = contactService.addContact(contact);
+    public ResponseEntity<ApiResponse> addContact(@Valid @RequestBody ContactDTO contactDTO){
+        ContactDTO savedContact = contactService.addContact(contactDTO);
         ApiResponse response = new ApiResponse(
                 true,
                 "Contact created successfully",
@@ -34,32 +35,31 @@ public class ContactController {
     //Retrieve All Contacts
     @GetMapping
     public ResponseEntity<ApiResponse> getAllContacts(){
-        List<Contact> contacts =  contactService.getAllContacts();
+        List<ContactDTO> contactDTO =  contactService.getAllContacts();
         ApiResponse response = new ApiResponse(
                 true,
                 "Contacts retrieved successfully",
-                   contacts
+                   contactDTO
                 );
         return ResponseEntity.ok().body(response);
     }
 
-
     //get contact by id
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getContactById(@PathVariable Long id){
-        Contact contact = contactService.getContactById(id);
+        ContactDTO contactDTO = contactService.getContactById(id);
         ApiResponse response = new ApiResponse(
                 true,
                 "Contact retrieved successfully",
-                contact
+                contactDTO
         );
         return ResponseEntity.ok().body(response);
     }
 
     //update contact by id
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse> updateContactById(@PathVariable Long id, @Valid @RequestBody Contact contact){
-       Contact updatedcontact = contactService.updateContactById(id,contact);
+    public ResponseEntity<ApiResponse> updateContactById(@PathVariable Long id, @Valid @RequestBody ContactDTO contactDTO){
+       ContactDTO updatedcontact = contactService.updateContactById(id,contactDTO);
         ApiResponse response = new ApiResponse(
                 true,
                 "Contact updated successfully",
@@ -67,6 +67,7 @@ public class ContactController {
         );
         return ResponseEntity.ok().body(response);
     }
+
     //delete contact by id
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteContactById(@PathVariable  Long id){

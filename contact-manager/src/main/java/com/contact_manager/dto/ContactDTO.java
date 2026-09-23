@@ -1,16 +1,12 @@
-package com.contact_manager.entity;
+package com.contact_manager.dto;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-@Entity // Marks this class as a database entity
-@Table(name = "contacts") // Maps this class to the contacts table
-public class Contact {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generates ID
+public class ContactDTO {
+
     private Long id;
 
     @NotBlank(message = "First name is required")
@@ -28,7 +24,7 @@ public class Contact {
     private String email;
     private String address;
 
-    public Contact(Long id, String firstName, String lastName, String phoneNumber, String email, String address) {
+    public ContactDTO(Long id, String firstName, String lastName, String phoneNumber, String email, String address) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -37,8 +33,8 @@ public class Contact {
         this.address = address;
     }
 
-    // Required by JPA
-    public Contact() {
+
+    public ContactDTO() {
     }
 
     public Long getId() {
