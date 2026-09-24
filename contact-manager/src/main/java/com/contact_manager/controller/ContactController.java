@@ -1,7 +1,7 @@
 package com.contact_manager.controller;
 
-import com.contact_manager.dto.ContactDTO;
-import com.contact_manager.entity.Contact;
+import com.contact_manager.dto.ContactDtoRequest;
+import com.contact_manager.dto.ContactDtoResponse;
 import com.contact_manager.response.ApiResponse;
 import com.contact_manager.service.ContactService;
 import org.springframework.http.HttpStatus;
@@ -22,8 +22,8 @@ public class ContactController {
 
     //add contact
     @PostMapping
-    public ResponseEntity<ApiResponse> addContact(@Valid @RequestBody ContactDTO contactDTO){
-        ContactDTO savedContact = contactService.addContact(contactDTO);
+    public ResponseEntity<ApiResponse> addContact(@Valid @RequestBody ContactDtoRequest contactDtoRequest){
+        ContactDtoResponse savedContact = contactService.addContact(contactDtoRequest);
         ApiResponse response = new ApiResponse(
                 true,
                 "Contact created successfully",
@@ -35,11 +35,11 @@ public class ContactController {
     //Retrieve All Contacts
     @GetMapping
     public ResponseEntity<ApiResponse> getAllContacts(){
-        List<ContactDTO> contactDTO =  contactService.getAllContacts();
+        List<ContactDtoResponse> contacts =  contactService.getAllContacts();
         ApiResponse response = new ApiResponse(
                 true,
                 "Contacts retrieved successfully",
-                   contactDTO
+                   contacts
                 );
         return ResponseEntity.ok().body(response);
     }
@@ -47,23 +47,23 @@ public class ContactController {
     //get contact by id
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getContactById(@PathVariable Long id){
-        ContactDTO contactDTO = contactService.getContactById(id);
+        ContactDtoResponse contactDtoResponse = contactService.getContactById(id);
         ApiResponse response = new ApiResponse(
                 true,
                 "Contact retrieved successfully",
-                contactDTO
+                contactDtoResponse
         );
         return ResponseEntity.ok().body(response);
     }
 
     //update contact by id
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse> updateContactById(@PathVariable Long id, @Valid @RequestBody ContactDTO contactDTO){
-       ContactDTO updatedcontact = contactService.updateContactById(id,contactDTO);
+    public ResponseEntity<ApiResponse> updateContactById(@PathVariable Long id, @Valid @RequestBody ContactDtoRequest contactDtoRequest){
+       ContactDtoResponse updatedContact = contactService.updateContactById(id,contactDtoRequest);
         ApiResponse response = new ApiResponse(
                 true,
                 "Contact updated successfully",
-                updatedcontact
+                updatedContact
         );
         return ResponseEntity.ok().body(response);
     }

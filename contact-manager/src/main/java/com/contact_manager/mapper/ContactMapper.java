@@ -1,32 +1,34 @@
 package com.contact_manager.mapper;
 
-import com.contact_manager.dto.ContactDTO;
+import com.contact_manager.dto.ContactDtoRequest;
+import com.contact_manager.dto.ContactDtoResponse;
 import com.contact_manager.entity.Contact;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ContactMapper {
 
-    public Contact toEntity(ContactDTO contactDTO) {
+    // Request DTO → Entity
+    public Contact toEntity(ContactDtoRequest contactDtoRequest) {
         Contact contact = new Contact();
-        contact.setId(contactDTO.getId());
-        contact.setFirstName(contactDTO.getFirstName());
-        contact.setLastName(contactDTO.getLastName());
-        contact.setEmail(contactDTO.getEmail());
-        contact.setPhoneNumber(contactDTO.getPhoneNumber());
-        contact.setAddress(contactDTO.getAddress());
+        contact.setFirstName(contactDtoRequest.getFirstName());
+        contact.setLastName(contactDtoRequest.getLastName());
+        contact.setEmail(contactDtoRequest.getEmail());
+        contact.setPhoneNumber(contactDtoRequest.getPhoneNumber());
+        contact.setAddress(contactDtoRequest.getAddress());
         return contact;
 
     }
 
-    public ContactDTO toDTO(Contact contact) {
-        ContactDTO contactDTO = new ContactDTO();
-        contactDTO.setId(contact.getId());
-        contactDTO.setFirstName(contact.getFirstName());
-        contactDTO.setLastName(contact.getLastName());
-        contactDTO.setEmail(contact.getEmail());
-        contactDTO.setPhoneNumber(contact.getPhoneNumber());
-        contactDTO.setAddress(contact.getAddress());
-        return contactDTO;
+    // Entity → Response DTO
+    public ContactDtoResponse toDtoResponse(Contact contact) {
+        return new ContactDtoResponse(
+                contact.getId(),
+                contact.getFirstName(),
+                contact.getLastName(),
+                contact.getPhoneNumber(),
+                contact.getEmail(),
+                contact.getAddress()
+        );
     }
 }
