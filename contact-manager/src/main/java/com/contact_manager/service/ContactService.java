@@ -7,6 +7,7 @@ import com.contact_manager.exception.ContactNotFoundException;
 import com.contact_manager.mapper.ContactMapper;
 import com.contact_manager.repository.ContactRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
@@ -64,6 +65,44 @@ public class ContactService {
         Contact contact = contactRepository.findById(id).orElseThrow(() -> new ContactNotFoundException("Contact not found with id " + id));
         contactRepository.delete(contact);
     }
-}
+
+
+    public List<ContactDtoResponse> searchByFirstName(String firstName){
+        List<ContactDtoResponse> contacts = contactRepository.findByFirstNameContainingIgnoreCase(firstName)
+                .stream()
+                .map(contactMapper::toDtoResponse)
+                .toList();
+        if(contacts.isEmpty()){
+            throw new ContactNotFoundException("No contacts found with first name " + firstName);
+        }
+    return contacts;
+    }
+
+//    search by last name
+    public List<ContactDtoResponse> searchByLastName(String lastName){
+        List<ContactDtoResponse> contacts = contactRepository.findByLastNameContainingIgnoreCase(lastName)
+                .stream()
+                .map(contactMapper::toDtoResponse)
+                .toList();
+        if(contacts.isEmpty()){
+            throw new ContactNotFoundException("No contacts found with last name " + lastName);
+        }
+    return contacts;
+    }
+
+    //find by email
+    public ContactDtoResponse searchByEmail(String email){
+
+        Contact contact = contactRepository.findByEmail(email).orElseThrow(()->
+                new ContactNotFoundException("Contact not found with email "+ email));
+        return contactMapper.toDtoResponse(contact);
+    }
+//    find by phone number
+    public ContactDtoResponse searchByPhone(String phoneNumber){
+        Contact contact = contactRepository.findByPhoneNumber(phoneNumber).orElseThrow(()-> new ContactNotFoundException("contact not found with phone number " +phoneNumber));
+        return contactMapper.toDtoResponse(contact);
+    }
+ }
+
 
 

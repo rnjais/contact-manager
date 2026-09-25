@@ -44,6 +44,55 @@ public class ContactController {
         return ResponseEntity.ok().body(response);
     }
 
+    //    search by firstname
+    @GetMapping("/search/firstName")
+    public ResponseEntity<ApiResponse> searchByFirstName(@RequestParam String firstName){
+        List<ContactDtoResponse> contacts = contactService.searchByFirstName(firstName);
+
+        ApiResponse response = new ApiResponse(
+                true,
+                "contact found successfully",
+                contacts
+        );
+        return  ResponseEntity.ok().body(response);
+    }
+    //    search by lastname
+    @GetMapping("/search/lastName")
+    public ResponseEntity<ApiResponse> searchByLastName(@RequestParam String lastName){
+        List<ContactDtoResponse> contacts = contactService.searchByLastName(lastName);
+
+        ApiResponse response = new ApiResponse(
+                true,
+                "contact found successfully",
+                contacts
+        );
+        return  ResponseEntity.ok().body(response);
+    }
+
+//    search by email
+    @GetMapping("/search/email")
+    public ResponseEntity<ApiResponse> searchByEmail(@RequestParam String email){
+        ContactDtoResponse contact = contactService.searchByEmail(email);
+        ApiResponse response = new ApiResponse(
+                true,
+                "contact found successfully",
+                contact
+        );
+        return ResponseEntity.ok().body(response);
+    }
+
+//    search by phone number
+    @GetMapping("search/phoneNumber")
+    public ResponseEntity<ApiResponse> searchByPhone(@RequestParam String phoneNumber){
+        ContactDtoResponse contact = contactService.searchByPhone(phoneNumber);
+        ApiResponse response = new ApiResponse(
+                true,
+                "contact found Successfully",
+                contact
+        );
+        return ResponseEntity.ok().body(response);
+    }
+
     //get contact by id
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getContactById(@PathVariable Long id){
@@ -79,4 +128,6 @@ public class ContactController {
         );
         return ResponseEntity.ok().body(response);
     }
+
+
 }
