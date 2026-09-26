@@ -4,6 +4,7 @@ import com.contact_manager.dto.ContactDtoRequest;
 import com.contact_manager.dto.ContactDtoResponse;
 import com.contact_manager.response.ApiResponse;
 import com.contact_manager.service.ContactService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +35,14 @@ public class ContactController {
 
     //Retrieve All Contacts
     @GetMapping
-    public ResponseEntity<ApiResponse> getAllContacts(){
-        List<ContactDtoResponse> contacts =  contactService.getAllContacts();
+    public ResponseEntity<ApiResponse> getAllContacts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "firstName") String sort,
+            @RequestParam(defaultValue = "asc") String direction)
+    {
+        Page<ContactDtoResponse> contacts =  contactService.getAllContacts(page,size,sort,direction);
+
         ApiResponse response = new ApiResponse(
                 true,
                 "Contacts retrieved successfully",

@@ -6,8 +6,12 @@ import com.contact_manager.entity.Contact;
 import com.contact_manager.exception.ContactNotFoundException;
 import com.contact_manager.mapper.ContactMapper;
 import com.contact_manager.repository.ContactRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
+
 
 import java.util.List;
 
@@ -32,11 +36,20 @@ public class ContactService {
     }
 
     //Retrieve all contact
-    public List<ContactDtoResponse> getAllContacts() {
-        return contactRepository.findAll()
-                .stream()
-                .map(contactMapper::toDtoResponse)
-                .toList();
+    public Page<ContactDtoResponse> getAllContacts(
+            int page,
+            int size,
+            String sort,
+            String direction) {
+
+        Sort.Direction sortDirection =
+                Sort.Direction.fromString(direction);
+
+        Pageable pageable =
+                PageRequest.of(page, size, Sort.by(sortDirection, sort));
+
+        return contactRepository.findAll(pageable)
+                .map(contactMapper::toDtoResponse);
     }
 
     //get contact by id
@@ -105,4 +118,10 @@ public class ContactService {
  }
 
 
-
+//                          Pageable = REQUEST
+//                                   ↓
+//                      "Give me page 0, 5 records"
+//
+//                              Page = RESPONSE
+//                                   ↓
+//               "Here are those 5 records + information about all pages"
